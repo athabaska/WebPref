@@ -10,7 +10,7 @@ using System.Text;
 namespace WebPref.Core.Utils
 {
     /// <summary> Пуля, гора и висты игрока в одной игре </summary>
-    public class PlayerResults
+    public class PlayerResults : ICloneable
     {
         #region Члены
 
@@ -29,22 +29,7 @@ namespace WebPref.Core.Utils
 
         #region Конструктор
 
-        public PlayerResults(string playerId, string otherPlayerId1, string otherPlayerId2)
-            : this(playerId)
-        {
-            _whists[otherPlayerId1] = 0;
-            _whists[otherPlayerId2] = 0;
-        }
-
-        public PlayerResults(string playerId, string otherPlayerId1, string otherPlayerId2, string otherPlayerId3)
-            : this(playerId)
-        {
-            _whists[otherPlayerId1] = 0;
-            _whists[otherPlayerId2] = 0;
-            _whists[otherPlayerId3] = 0;
-        }
-
-        private PlayerResults(string playerId)
+        public PlayerResults(string playerId)
         {
             PlayerId = playerId;
             _gains = 0;
@@ -90,14 +75,12 @@ namespace WebPref.Core.Utils
         }
 
         /// <summary> Получить пулю </summary>
-        /// <returns> </returns>
         public int GetGains()
         {
             return _gains;
         }
 
         /// <summary> Получить гору </summary>
-        /// <returns> </returns>
         public int GetPenalties()
         {
             return _penalties;
@@ -118,7 +101,8 @@ namespace WebPref.Core.Utils
             int w;
             if (!_whists.TryGetValue(otherPlayerId, out w))
             {
-                throw new ArgumentException("Cant whist on " + otherPlayerId);
+                w = 0;
+                _whists[otherPlayerId] = 0;
             }
             return w;
         }
@@ -135,6 +119,20 @@ namespace WebPref.Core.Utils
 
                 return sb.ToString();
             }
+        }
+
+        public object Clone()
+        {
+            var clone = new PlayerResults(PlayerId)
+            {
+                _gains = _gains,
+                _penalties = _penalties
+            };
+            foreach (var w in _whists )
+            {
+                clone._whists[w.Key] = w.Value;
+            }
+            return clone;
         }
 
         #endregion

@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace WebPref.Core.Utils
 {
-    /// <summary> Результаты одной игры на 3х игроков </summary>
+    /// <summary> Расчетчик результатов игры </summary>
     public class ResultsCalc : IResultsCalc
     {
         #region Константы
@@ -21,34 +21,48 @@ namespace WebPref.Core.Utils
         #region Члены
 
         private readonly IDictionary<string, PlayerResults> _players;
-        private readonly int _playersCount;
+        private int _playersCount;
 
         #endregion
 
         #region Конструктор
 
-        public ResultsCalc(string p1, string p2, string p3)
+        public ResultsCalc()
         {
             _players = new Dictionary<string, PlayerResults>();
-            _players[p1] = new PlayerResults(p1, p2, p3);
-            _players[p2] = new PlayerResults(p2, p1, p3);
-            _players[p3] = new PlayerResults(p3, p1, p2);
-            _playersCount = 3;
-        }
 
-        public ResultsCalc(string p1, string p2, string p3, string p4)
-        {
-            _players = new Dictionary<string, PlayerResults>();
-            _players[p1] = new PlayerResults(p1, p2, p3, p4);
-            _players[p2] = new PlayerResults(p2, p1, p3, p4);
-            _players[p3] = new PlayerResults(p3, p1, p2, p4);
-            _players[p3] = new PlayerResults(p4, p1, p2, p3);
-            _playersCount = 4;
         }
 
         #endregion
 
         #region Методы
+
+        public bool Init(IList<string> playerIds)
+        {
+            var hash = new HashSet<string>(playerIds);
+            //уникальность ID
+            if (hash.Count != playerIds.Count)
+                return false;
+            if (playerIds.Count == 3)
+            {
+                _players[playerIds[0]] = new PlayerResults(playerIds[0]);
+                _players[playerIds[1]] = new PlayerResults(playerIds[1]);
+                _players[playerIds[2]] = new PlayerResults(playerIds[2]);
+                _playersCount = 3;
+                return true;
+            }
+            else 
+            if (playerIds.Count == 4)
+            {
+                _players[playerIds[0]] = new PlayerResults(playerIds[0]);
+                _players[playerIds[1]] = new PlayerResults(playerIds[1]);
+                _players[playerIds[2]] = new PlayerResults(playerIds[2]);
+                _players[playerIds[3]] = new PlayerResults(playerIds[3]);
+                _playersCount = 4;
+                return true;
+            }
+            return false;
+        }
 
         public void Gain(string playerId, int value)
         {
@@ -65,6 +79,7 @@ namespace WebPref.Core.Utils
         public void Whist(string playerId, string targetId, int value)
         {
             var player = GetPlayer(playerId);
+            GetPlayer(targetId);
             player.AddWhists(targetId, value);
         }
 
@@ -78,25 +93,32 @@ namespace WebPref.Core.Utils
             return p;
         }
 
-        public PlayerResults[] Calculate()
+        public IList<PlayerResults> Calculate()
         {
+            //создать клоны объектов
+            var players = new List<PlayerResults>();
+            foreach (var p in _players.Values)
+            {
+                players.Add((PlayerResults)p.Clone());
+            }
+
             //гора минус пуля, минимальная гора
             var minPenalty = int.MaxValue;
-            foreach (var currPlayer in _players.Values)
+            foreach (var currPlayer in players)
             {
                 currPlayer.AddPenalties(-currPlayer.GetGains());
                 minPenalty = Math.Min(minPenalty, currPlayer.GetPenalties());
             }
 
             //амнистия
-            foreach (var currPlayer in _players.Values)
+            foreach (var currPlayer in players)
             {
                 currPlayer.AddPenalties(-minPenalty);
                 Trace.WriteLine(string.Format("Амнистия {0} {1}", currPlayer.PlayerId, currPlayer.GetPenalties()));
             }
 
             //окончательный расчет
-            foreach (var currPlayer in _players.Values)
+            foreach (var currPlayer in players)
             {
                 var p = currPlayer.GetPenalties();
                 if (p == 0)
@@ -115,7 +137,7 @@ namespace WebPref.Core.Utils
                 currPlayer.AddWhists(incr*PenaltyCost);
 
                 //записать остальным висты за гору
-                foreach (var otherPlayer in _players.Values)
+                foreach (var otherPlayer in players)
                 {
                     if (otherPlayer.PlayerId != currPlayer.PlayerId)
                         otherPlayer.AddWhists(currPlayer.PlayerId, p/_playersCount);
@@ -123,9 +145,9 @@ namespace WebPref.Core.Utils
             }
 
             //сократить висты
-            foreach (var currPlayer in _players.Values)
+            foreach (var currPlayer in players)
             {
-                foreach (var otherPlayer in _players.Values)
+                foreach (var otherPlayer in players)
                 {
                     if (currPlayer.PlayerId == otherPlayer.PlayerId)
                         continue;
@@ -138,7 +160,7 @@ namespace WebPref.Core.Utils
                 }
             }
 
-            return _players.Values.ToArray();
+            return players;
         }
 
         #endregion

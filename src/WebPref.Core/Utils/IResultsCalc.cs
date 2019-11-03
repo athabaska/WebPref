@@ -1,9 +1,18 @@
-﻿namespace WebPref.Core.Utils
+﻿using System.Collections.Generic;
+
+namespace WebPref.Core.Utils
 {
-    /// <summary> Результаты одной игры </summary>
+    /// <summary> Расчетчик результатов игры </summary>
     public interface IResultsCalc
     {
         #region Методы
+        
+        /// <summary>
+        ///     Инициализировать расчетчик
+        /// </summary>
+        /// <param name="playerIds">Уникальные ID игроков</param>
+        /// <returns>Инициализация успешна</returns>
+        bool Init(IList<string> playerIds);
 
         /// <summary> Записать в пулю </summary>
         /// <param name="playerId"> Уникальный ID игрока </param>
@@ -23,7 +32,7 @@
 
         /// <summary> Окончательный расчет </summary>
         /// <returns> Результаты </returns>
-        PlayerResults[] Calculate();
+        IList<PlayerResults> Calculate();
 
         #endregion
     }
