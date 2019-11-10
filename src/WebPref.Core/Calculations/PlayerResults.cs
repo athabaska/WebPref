@@ -7,15 +7,15 @@ using System.Text;
 
 #endregion
 
-namespace WebPref.Core.Utils
+namespace WebPref.Core.Calculations
 {
     /// <summary> Пуля, гора и висты игрока в одной игре </summary>
     public class PlayerResults : ICloneable
     {
         #region Члены
 
-        private volatile int _gains;
-        private volatile int _penalties;
+        private volatile int _bullet;
+        private volatile int _mountain;
         private readonly IDictionary<string, int> _whists;
 
         #endregion
@@ -32,8 +32,8 @@ namespace WebPref.Core.Utils
         public PlayerResults(string playerId)
         {
             PlayerId = playerId;
-            _gains = 0;
-            _penalties = 0;
+            _bullet = 0;
+            _mountain = 0;
             _whists = new Dictionary<string, int>();
         }
 
@@ -42,15 +42,15 @@ namespace WebPref.Core.Utils
         #region Методы
 
         /// <summary> Записать в пулю </summary>
-        public void AddGains(int value)
+        public void AddBullet(int value)
         {
-            _gains += value;
+            _bullet += value;
         }
 
         /// <summary> Записать в гору </summary>
-        public void AddPenalties(int value)
+        public void AddMountain(int value)
         {
-            _penalties += value;
+            _mountain += value;
         }
 
         /// <summary> Записать висты </summary>
@@ -75,15 +75,15 @@ namespace WebPref.Core.Utils
         }
 
         /// <summary> Получить пулю </summary>
-        public int GetGains()
+        public int GetBullet()
         {
-            return _gains;
+            return _bullet;
         }
 
         /// <summary> Получить гору </summary>
-        public int GetPenalties()
+        public int GetMountain()
         {
-            return _penalties;
+            return _mountain;
         }
 
         /// <summary> Получить висты </summary>
@@ -111,7 +111,7 @@ namespace WebPref.Core.Utils
         {
             lock (_whists)
             {
-                var sb = new StringBuilder(string.Format("{0} {1} {2}", PlayerId, _gains, _penalties));
+                var sb = new StringBuilder(string.Format("{0} {1} {2}", PlayerId, _bullet, _mountain));
                 foreach (var w in _whists)
                 {
                     sb.Append(string.Format(" ->{0}:{1}", w.Key, w.Value));
@@ -125,8 +125,8 @@ namespace WebPref.Core.Utils
         {
             var clone = new PlayerResults(PlayerId)
             {
-                _gains = _gains,
-                _penalties = _penalties
+                _bullet = _bullet,
+                _mountain = _mountain
             };
             foreach (var w in _whists )
             {
