@@ -56,11 +56,15 @@ namespace WebPref.Web.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
+                EmailService emailService = new EmailService();
+                await emailService.SendEmailAsync(Input.Email, "Запрос сброса пароля",
+                    $"Для сброса пароля на сервере онлайн-преферанса перейдите по этой <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>ссылке</a>. <br> Если вы не запрашивали сброс пароля, удалите это письмо и проверьте свою учетную запись.");
+                /*
                 await _emailSender.SendEmailAsync(
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                    */
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
