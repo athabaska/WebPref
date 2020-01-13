@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "knockout@3.5.0",
+      "destination": "wwwroot/lib/knockout/"
+    },
+    {
+      "library": "require.js@2.3.6",
+      "destination": "wwwroot/lib/require.js/"
+    },
+    {
+      "library": "jquery@3.4.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "library": "require-domReady@2.0.1",
+      "destination": "wwwroot/lib/",
+      "files": [
+        "domReady.min.js",
+        "domReady.js"
+      ]
+    }
+  ]
+}

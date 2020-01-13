@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Лобби</title>
+    <script data-main="app" src="lib/require.js/require.js"></script>
+</head>
+<body>
+    <div id="chat" style="border: solid 1px; width: 200px; height:100%; position: relative; top: 0px; left: 0px;">
+        Здесь будет чат
+    </div>
+    <div id="tables" style="border: solid 1px; position: relative; width: 100%; height: 100%;">
+        Активные столы
+        <div data-bind="foreach: tables">
+            <div style="width: 150px; height:75px;border: solid 1px;" data-bind="text: name", click: joinTable></div>
+        </div>
+        <button data-bind="click: getTableList">Обновить</button>
+    </div>   
+</body>
+</html>

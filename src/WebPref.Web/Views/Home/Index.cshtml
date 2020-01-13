@@ -1,7 +1,24 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
     ViewData["Title"] = "Главная страница";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Сервер онлайн-преферанса</h1>    
+    <h1 class="display-4">Сервер онлайн-преферанса</h1>
+    <div class="text-center" style="border:solid 1px;">
+        Активных пользователей на сайте: пока не известно
+        Идёт игр: пока не известно
+        @if(SignInManager.IsSignedIn(User))
+        {
+            <p>Здесь будет переход </p>
+        }
+        else
+        {
+        <p>Для входа на сайт и участия в играх, пожалуйста войдите на сайт или зарегистрируйтесь</p> 
+        }
+
+    </div>
 </div>
+
