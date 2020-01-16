@@ -6,7 +6,7 @@ namespace WebPref.Core
 {
     public class Table
     {
-        public string Name { get; set; }
+        public string Id { get; private set; }
 
 
     }

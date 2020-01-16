@@ -4,7 +4,9 @@ using System.Text;
 
 namespace WebPref.Core
 {
-
+    /// <summary>
+    ///     Партия, 
+    /// </summary>
     internal class Party
     {
         public PartyState State { get; private set; }

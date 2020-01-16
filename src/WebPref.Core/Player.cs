@@ -11,7 +11,7 @@ namespace WebPref.Core
     /// </summary>
     public class Player
     {
-        public string id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
     }
 }
