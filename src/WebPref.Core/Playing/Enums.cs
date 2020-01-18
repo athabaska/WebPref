@@ -49,9 +49,9 @@ namespace WebPref.Core.Playing
     }
 
     /// <summary>
-    ///     Игра
+    ///     Заказанная игра
     /// </summary>
-    public enum GameEnum
+    public enum ContractEnum
     {
         [Description("6")]
         Six = 6,
@@ -65,6 +65,26 @@ namespace WebPref.Core.Playing
         Ten = 10,
         [Description("Miser")]
         Miser = 11
+    }
+
+    /// <summary>
+    ///     Игра по количеству игроков
+    /// </summary>
+    public enum PlayersCountEnum
+    {
+        Three = 3,
+        Four = 4
+    }
+
+    /// <summary>
+    ///     Тип игры
+    /// </summary>
+    public enum GameTypeEnum
+    {
+        Leningrad = 0,
+        Rostov = 1,
+        Sochi = 2,
+        Hybrid = 3
     }
 
     public enum GameState

@@ -28,7 +28,7 @@ namespace WebPref.Core
 
             modelBuilder.Entity<Table>().HasKey(t => t.Id);
             modelBuilder.Entity<Table>().Property(t => t.Id).HasMaxLength(32);
-            modelBuilder.Entity<Table>().HasMany(t => t.Players);
+            modelBuilder.Entity<Table>().HasMany(t => t.GetPlayers());
         }
 
         public DbSet<Table> Tables { get; set; }        

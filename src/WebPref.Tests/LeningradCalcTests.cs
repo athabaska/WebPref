@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WebPref.Core.Calculations;
-using WebPref.Core.Entities;
+using WebPref.Core.Playing;
 using WebPref.Core.Utils;
 
 namespace Tests
@@ -36,9 +36,9 @@ namespace Tests
         {
             IResultsCalc calc = new LeningradCalc();
             calc.Init(new List<string> { p1, p2, p3 });
-            calc.GameSuccess(p1, GameEnum.Six);
-            calc.WhistSuccess(p2, p1, GameEnum.Six, 2);
-            calc.WhistSuccess(p3, p1, GameEnum.Six, 2);
+            calc.GameSuccess(p1, ContractEnum.Six);
+            calc.WhistSuccess(p2, p1, ContractEnum.Six, 2);
+            calc.WhistSuccess(p3, p1, ContractEnum.Six, 2);
             var res = calc.Calculate();
             var p1res = res.FirstOrDefault(r => r.PlayerId == p1);
             var p2res = res.FirstOrDefault(r => r.PlayerId == p2);

@@ -20,7 +20,7 @@ namespace WebPref.Core.Calculations
         /// </summary>
         /// <param name="playerId"> Уникальный ID игрока </param>
         /// <param name="game"> Сыгранная игра </param>
-        void GameSuccess(string playerId, GameEnum game);
+        void GameSuccess(string playerId, ContractEnum game);
 
         /// <summary>
         ///     Игрок несыграл игру
@@ -28,20 +28,20 @@ namespace WebPref.Core.Calculations
         /// <param name="playerId"> Уникальный ID игрока </param>
         /// <param name="game"> Сыгранная игра </param>
         /// <param name="tricks"> Сколько взяток недобрано </param>
-        void GameFail(string playerId, GameEnum game, int tricks);
+        void GameFail(string playerId, ContractEnum game, int tricks);
 
         /// <summary> Записать висты за игру </summary>
         /// <param name="playerId"> Уникальный ID игрока </param>
         /// <param name="targetId"> Уникальный ID игрока, на которого пишутся висты </param>
         /// <param name="game"> Сыгранная игра </param>
         /// <param name="tricks"> Сколько взяток писать </param>
-        void WhistSuccess(string playerId, string targetId, GameEnum game, int tricks);
+        void WhistSuccess(string playerId, string targetId, ContractEnum game, int tricks);
 
         /// <summary> Записать висты за игру </summary>
         /// <param name="playerId"> Уникальный ID игрока </param>
         /// <param name="game"> Сыгранная игра </param>
         /// <param name="tricks"> Сколько взяток недобрано </param>
-        void WhistFail(string playerId, GameEnum game, int tricks);
+        void WhistFail(string playerId, ContractEnum game, int tricks);
 
         /// <summary> Окончательный расчет </summary>
         /// <returns> Результаты </returns>

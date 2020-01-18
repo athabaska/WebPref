@@ -27,22 +27,22 @@ namespace WebPref.Core.Calculations
         /// <summary>
         ///     Цена успешной игры
         /// </summary>
-        private readonly IDictionary<GameEnum, int> _successPrice;
+        private readonly IDictionary<ContractEnum, int> _successPrice;
 
         /// <summary>
         ///     Цена несыгранной игры
         /// </summary>
-        private readonly IDictionary<GameEnum, int> _failPrice;
+        private readonly IDictionary<ContractEnum, int> _failPrice;
 
         /// <summary>
         ///     Цена успешного виста
         /// </summary>
-        private readonly IDictionary<GameEnum, int> _successWhistPrice;
+        private readonly IDictionary<ContractEnum, int> _successWhistPrice;
 
         /// <summary>
         ///     Цена несыгранного виста
         /// </summary>
-        private readonly IDictionary<GameEnum, int> _failWhistPrice;
+        private readonly IDictionary<ContractEnum, int> _failWhistPrice;
 
         private int _playersCount;
 
@@ -53,40 +53,40 @@ namespace WebPref.Core.Calculations
         public LeningradCalc()
         {
             _players = new Dictionary<string, PlayerResults>();
-            _successPrice = new Dictionary<GameEnum, int>();
-            _failPrice = new Dictionary<GameEnum, int>();
-            _successWhistPrice = new Dictionary<GameEnum, int>();
-            _failWhistPrice = new Dictionary<GameEnum, int>();
+            _successPrice = new Dictionary<ContractEnum, int>();
+            _failPrice = new Dictionary<ContractEnum, int>();
+            _successWhistPrice = new Dictionary<ContractEnum, int>();
+            _failWhistPrice = new Dictionary<ContractEnum, int>();
 
-            _successPrice[GameEnum.Six] = 2;
-            _failPrice[GameEnum.Six] = 4;
-            _successWhistPrice[GameEnum.Six] = 4;
-            _failWhistPrice[GameEnum.Six] = 2;
+            _successPrice[ContractEnum.Six] = 2;
+            _failPrice[ContractEnum.Six] = 4;
+            _successWhistPrice[ContractEnum.Six] = 4;
+            _failWhistPrice[ContractEnum.Six] = 2;
 
-            _successPrice[GameEnum.Seven] = 4;
-            _failPrice[GameEnum.Seven] = 8;
-            _successWhistPrice[GameEnum.Seven] = 8;
-            _failWhistPrice[GameEnum.Seven] = 4;
+            _successPrice[ContractEnum.Seven] = 4;
+            _failPrice[ContractEnum.Seven] = 8;
+            _successWhistPrice[ContractEnum.Seven] = 8;
+            _failWhistPrice[ContractEnum.Seven] = 4;
 
-            _successPrice[GameEnum.Eight] = 6;
-            _failPrice[GameEnum.Eight] = 12;
-            _successWhistPrice[GameEnum.Eight] = 6;
-            _failWhistPrice[GameEnum.Eight] = 12;
+            _successPrice[ContractEnum.Eight] = 6;
+            _failPrice[ContractEnum.Eight] = 12;
+            _successWhistPrice[ContractEnum.Eight] = 6;
+            _failWhistPrice[ContractEnum.Eight] = 12;
 
-            _successPrice[GameEnum.Nine] = 8;
-            _failPrice[GameEnum.Nine] = 16;
-            _successWhistPrice[GameEnum.Nine] = 16;
-            _failWhistPrice[GameEnum.Nine] = 8;
+            _successPrice[ContractEnum.Nine] = 8;
+            _failPrice[ContractEnum.Nine] = 16;
+            _successWhistPrice[ContractEnum.Nine] = 16;
+            _failWhistPrice[ContractEnum.Nine] = 8;
 
-            _successPrice[GameEnum.Ten] = 10;
-            _failPrice[GameEnum.Ten] = 20;
-            _successWhistPrice[GameEnum.Ten] = 20;
-            _failWhistPrice[GameEnum.Ten] = 10;
+            _successPrice[ContractEnum.Ten] = 10;
+            _failPrice[ContractEnum.Ten] = 20;
+            _successWhistPrice[ContractEnum.Ten] = 20;
+            _failWhistPrice[ContractEnum.Ten] = 10;
 
-            _successPrice[GameEnum.Miser] = 10;
-            _failPrice[GameEnum.Miser] = 20;
-            _successWhistPrice[GameEnum.Miser] = 0;
-            _failWhistPrice[GameEnum.Miser] = 0;
+            _successPrice[ContractEnum.Miser] = 10;
+            _failPrice[ContractEnum.Miser] = 20;
+            _successWhistPrice[ContractEnum.Miser] = 0;
+            _failWhistPrice[ContractEnum.Miser] = 0;
         }
 
         #endregion
@@ -120,28 +120,28 @@ namespace WebPref.Core.Calculations
             return false;
         }
 
-        public void GameSuccess(string playerId, GameEnum game)
+        public void GameSuccess(string playerId, ContractEnum game)
         {
             var player = GetPlayer(playerId);
             GetPlayer(playerId);
             player.AddBullet(_successPrice[game]);
         }
 
-        public void WhistSuccess(string playerId, string targetId, GameEnum game, int tricks)
+        public void WhistSuccess(string playerId, string targetId, ContractEnum game, int tricks)
         {
             var player = GetPlayer(playerId);
             GetPlayer(targetId);
             player.AddWhists(targetId, _successWhistPrice[game]);
         }
 
-        public void GameFail(string playerId, GameEnum game, int tricks)
+        public void GameFail(string playerId, ContractEnum game, int tricks)
         {
             var player = GetPlayer(playerId);
             GetPlayer(playerId);
             player.AddMountain(_failPrice[game]);
         }
 
-        public void WhistFail(string playerId, GameEnum game, int tricks)
+        public void WhistFail(string playerId, ContractEnum game, int tricks)
         {
             var player = GetPlayer(playerId);
             GetPlayer(playerId);
