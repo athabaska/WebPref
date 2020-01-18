@@ -6,11 +6,11 @@
 
 #region usings
 
-
+using WebPref.Core.Utils;
 
 #endregion
 
-namespace WebPref.Core.Utils
+namespace WebPref.Core.Entities
 {
     /// <summary>
     ///     Карта

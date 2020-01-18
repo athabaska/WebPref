@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WebPref.Core.Calculations;
+using WebPref.Core.Entities;
 using WebPref.Core.Utils;
 
 namespace Tests

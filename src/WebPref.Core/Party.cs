@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using WebPref.Core.Entities;
 
 namespace WebPref.Core
 {
@@ -18,7 +18,7 @@ namespace WebPref.Core
         /// Тут тоже желательно подумать, по идее последовательность розыгрышей не должна изменяться
         /// Может быть, надо скрыть список и показать только методы для запуска и просмотра        /// 
         /// </summary>
-        public List<Game> Games { get; }
+        public List<Deal> Games { get; }
 
 
     }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WebPref.Core.Utils;
+using WebPref.Core.Entities;
 
 namespace WebPref.Core.Calculations
 {

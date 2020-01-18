@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace WebPref.Core.Utils
+namespace WebPref.Core.Entities
 {
     /// <summary>
     ///     Масть

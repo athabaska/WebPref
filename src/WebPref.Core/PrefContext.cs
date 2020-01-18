@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
+using WebPref.Core.Entities;
 using System.Collections.Generic;
 using System.Text;
 
