@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace WebPref.Core.Entities
+namespace WebPref.Core.Playing
 {
     /// <summary>
     ///     Масть
@@ -65,5 +65,14 @@ namespace WebPref.Core.Entities
         Ten = 10,
         [Description("Miser")]
         Miser = 11
+    }
+
+    public enum GameState
+    {
+        Configuring,
+        Bidding,
+        Playing,
+        Ended,
+        Defered
     }
 }

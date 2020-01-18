@@ -10,7 +10,7 @@ using WebPref.Core.Utils;
 
 #endregion
 
-namespace WebPref.Core.Entities
+namespace WebPref.Core.Playing
 {
     /// <summary>
     ///     Карта

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebPref.Core
+namespace WebPref.Core.Playing
 {
     /// <summary>
-    ///     Раздача
+    ///     Раздача (с розыгрышем)
     /// </summary>
     internal class Deal
     {

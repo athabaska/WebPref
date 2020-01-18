@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebPref.Core.Entities;
 using System.Collections.Generic;
 using System.Text;
+using WebPref.Core.Lobby;
+using WebPref.Core.Playing;
 
 namespace WebPref.Core
 {

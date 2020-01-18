@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebPref.Core.Entities
+namespace WebPref.Core.Playing
 {
     
     /// <summary>
