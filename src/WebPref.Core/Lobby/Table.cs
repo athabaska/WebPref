@@ -12,7 +12,7 @@ namespace WebPref.Core.Lobby
     {
         private readonly TableSettings _settings;
 
-        private readonly IList<Player> _players;
+        public List<TablePlayers> TablePlayers { get; set; }
 
         /// <summary>
         ///     Уникальный ID
@@ -24,12 +24,23 @@ namespace WebPref.Core.Lobby
         /// </summary>
         public int Number { get; private set; }
 
+        public Table()
+        {
+            TablePlayers = new List<TablePlayers>();
+        }
+
         public Table(Player owner, TableSettings settings, int number)
         {
             Id = Guid.NewGuid();
             _settings = settings;
             Number = number;
-            _players = new List<Player>();
+            TablePlayers = new List<TablePlayers>();
+            TablePlayers tablePlayers = new TablePlayers();
+            tablePlayers.PlayerId = owner.Id;
+            tablePlayers.Player = owner;
+            tablePlayers.TableId = Id;
+            tablePlayers.Table = this;
+            TablePlayers.Add(tablePlayers);
         }
 
         /// <summary>
@@ -37,7 +48,18 @@ namespace WebPref.Core.Lobby
         /// </summary>
         public IList<Player> GetPlayers()
         {
-            return _players.ToArray();
+            return TablePlayers.Select(tp => tp.Player).ToArray();            
+        }
+
+        public bool AddPlayer(Player player)
+        {            
+            if (this.TablePlayers.Count == (int)this._settings.PlayersCount)
+                return false;
+            if (this.TablePlayers.Find(tp => tp.Player == player) != null)
+                return false;
+                        
+            this.TablePlayers.Add(new TablePlayers() { PlayerId = player.Id, Player = player, TableId = Id, Table = this });
+            return true;
         }
     }
 }

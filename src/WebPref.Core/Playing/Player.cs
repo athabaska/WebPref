@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WebPref.Core.Lobby;
 
 namespace WebPref.Core.Playing
 {
@@ -12,6 +13,8 @@ namespace WebPref.Core.Playing
     public class Player
     {
         public string Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; }        
+
+        public List<TablePlayers> Tables { get; set; }
     }
 }
