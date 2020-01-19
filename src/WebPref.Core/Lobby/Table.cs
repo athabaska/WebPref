@@ -12,6 +12,10 @@ namespace WebPref.Core.Lobby
     {
         private readonly TableSettings _settings;
 
+        /// <summary>
+        ///     Список игроков
+        ///     Может меняться (могут пересаживаться до начала партии)?
+        /// </summary>
         private readonly IList<Player> _players;
 
         /// <summary>
@@ -23,6 +27,11 @@ namespace WebPref.Core.Lobby
         ///     Номер стола (для отражения на ГУИ)
         /// </summary>
         public int Number { get; private set; }
+
+        /// <summary>
+        ///     Текущая игра
+        /// </summary>
+        public Game CurrentGame { get; private set; }
 
         public Table(Player owner, TableSettings settings, int number)
         {
@@ -38,6 +47,17 @@ namespace WebPref.Core.Lobby
         public IList<Player> GetPlayers()
         {
             return _players.ToArray();
+        }
+
+        /// <summary>
+        ///     Начать игру
+        /// </summary>
+        /// <returns>Получилось</returns>
+        public bool StartGame()
+        {
+            //todo проверки на возможность начала игры
+            CurrentGame = new Game(_players, new GameSettings(_settings.PlayersCount, _settings.GameType));
+            return true;
         }
     }
 }

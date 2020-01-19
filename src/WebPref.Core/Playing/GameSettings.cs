@@ -1,17 +1,14 @@
-﻿using WebPref.Core.Playing;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace WebPref.Core.Lobby
+namespace WebPref.Core.Playing
 {
     /// <summary>
-    ///     Настройки стола
+    ///     Параметры и конвенции игры 
     /// </summary>
-    public class TableSettings
+    public class GameSettings
     {
-        /// <summary>
-        ///     Создатель стола выбирает, кто может присоединиться
-        /// </summary>
-        public bool IsPrivate { get; private set; }
-
         /// <summary>
         ///     Количество игроков
         /// </summary>
@@ -25,11 +22,11 @@ namespace WebPref.Core.Lobby
         /// <summary>
         ///     Конструктор с неизменяемыми параметрами
         /// </summary>
-        public TableSettings(PlayersCountEnum playersCount, GameTypeEnum gameType, bool isPrivate)
+        public GameSettings(PlayersCountEnum playersCount, GameTypeEnum gameType)
         {
-            IsPrivate = isPrivate;
             PlayersCount = playersCount;
             GameType = gameType;
         }
+
     }
 }
