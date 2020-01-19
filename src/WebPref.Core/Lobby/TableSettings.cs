@@ -27,5 +27,15 @@ namespace WebPref.Core.Lobby
         ///     Тип игры
         /// </summary>
         public GameTypeEnum GameType { get; private set; }
+
+        /// <summary>
+        ///     Конструктор с неизменяемыми параметрами
+        /// </summary>
+        public TableSettings(PlayersCountEnum playersCount, GameTypeEnum gameType, bool isPrivate)
+        {
+            IsPrivate = isPrivate;
+            PlayersCount = playersCount;
+            GameType = gameType;
+        }
     }
 }

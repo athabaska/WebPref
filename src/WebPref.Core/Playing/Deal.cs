@@ -7,7 +7,7 @@ namespace WebPref.Core.Playing
     /// <summary>
     ///     Раздача (с розыгрышем)
     /// </summary>
-    internal class Deal
+    public class Deal
     {
         public int Number { get; private set; }
 

@@ -12,7 +12,8 @@ namespace WebPref.Core.Lobby
     {
         private readonly TableSettings _settings;
 
-        public List<TablePlayers> TablePlayers { get; set; }
+
+        public List<TablePlayers> TablePlayers { get; set; }        
 
         /// <summary>
         ///     Уникальный ID
@@ -28,6 +29,11 @@ namespace WebPref.Core.Lobby
         {
             TablePlayers = new List<TablePlayers>();
         }
+
+        /// <summary>
+        ///     Текущая игра
+        /// </summary>
+        public Game CurrentGame { get; private set; }
 
         public Table(Player owner, TableSettings settings, int number)
         {
@@ -59,6 +65,17 @@ namespace WebPref.Core.Lobby
                 return false;
                         
             this.TablePlayers.Add(new TablePlayers() { PlayerId = player.Id, Player = player, TableId = Id, Table = this });
+            return true;
+        }
+
+        /// <summary>
+        ///     Начать игру
+        /// </summary>
+        /// <returns>Получилось</returns>
+        public bool StartGame()
+        {
+            //todo проверки на возможность начала игры
+            CurrentGame = new Game(GetPlayers(), new GameSettings(_settings.PlayersCount, _settings.GameType));
             return true;
         }
     }
