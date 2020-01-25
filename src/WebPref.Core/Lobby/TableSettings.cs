@@ -7,12 +7,6 @@ namespace WebPref.Core.Lobby
     /// </summary>
     public class TableSettings
     {
-        public TableSettings(PlayersCountEnum playersCount, GameTypeEnum gameType, bool isPrivate)
-        {
-            this.PlayersCount = playersCount;
-            this.GameType = gameType;
-            this.IsPrivate = isPrivate;
-        }
         /// <summary>
         ///     Создатель стола выбирает, кто может присоединиться
         /// </summary>
