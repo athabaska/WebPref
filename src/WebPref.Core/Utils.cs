@@ -1,16 +1,11 @@
-﻿/*
- * Author: oparinig
- * Date of creation: 2/20/2018 4:28:12 PM
- * Comments: Утилиты
- */
-
-#region usings
+﻿#region usings
 
 #endregion
 
 using System;
 using System.ComponentModel;
 using System.Linq;
+using WebPref.Core.Playing;
 
 namespace WebPref.Core.Utils
 {
@@ -19,13 +14,8 @@ namespace WebPref.Core.Utils
     /// </summary>
     public static class Utils
     {
-        #region Методы
+        public static SuitEnum[] Suits = { SuitEnum.Spades, SuitEnum.Clubs, SuitEnum.Diamonds, SuitEnum.Hearts, };
 
-        /// <summary>
-        ///     
-        /// </summary>
-        /// <param name="e"></param>
-        /// <returns></returns>
         public static string GetDescription(this Enum e)
         {
             var ca = e.GetType().GetField(e.ToString("F")).GetCustomAttributes(false);
@@ -35,6 +25,5 @@ namespace WebPref.Core.Utils
             return da == null ? string.Empty : da.Description;
         }
 
-        #endregion
     }
 }

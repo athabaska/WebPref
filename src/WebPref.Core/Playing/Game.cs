@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebPref.Core.Interfaces;
 
 namespace WebPref.Core.Playing
 {
     /// <summary>
     ///     Игра 
     /// </summary>
-    public class Game
+    public class Game : IGameObserver
     {
+        private Deal currentDeal;
+
         /// <summary>
         ///     Надо посмотреть, как обеспечивать постоянный порядок следования игроков
         ///     Можно вытащить итератор и метод для получения игрока по индексу
         /// </summary>
         private IList<Player> Players { get; }
 
-        private Round _currentRound;
-
-
+        
         //public IEnumerator<Player> PlayersEnumerator => Players.GetEnumerator();
 
         /// <summary>
@@ -31,16 +32,15 @@ namespace WebPref.Core.Playing
         public GameState State { get; private set; }
 
         /// <summary>
-        /// Тут тоже желательно подумать, по идее последовательность розыгрышей не должна изменяться
-        /// Может быть, надо скрыть список и показать только методы для запуска и просмотра
+        ///     Раздачи
         /// </summary>
-        public IList<Round> Rounds { get; }
+        public IList<Deal> Deals { get; }
 
         public Game(IList<Player> players, GameSettings settings)
         {
             Players = players;
             Settings = settings;
-            Rounds = new List<Round>();
+            Deals = new List<Deal>();
         }
 
         /// <summary>
@@ -52,28 +52,46 @@ namespace WebPref.Core.Playing
         //    return Players[i];
         //}
 
-        public Round StartNextRound()
+        public Deal StartNewDeal()
         {
             //раздать карты 
-            _currentRound = new Round(Rounds.Count);
-            Rounds.Add(_currentRound);
-            return _currentRound;
+            var deck = new Deck();
+            deck.Shuffle();
+            var p1 = new List<Card>();
+            var p2 = new List<Card>();
+            var p3 = new List<Card>();
+            var buy = new List<Card>();
+            
+            while (deck.Count > 0)
+            {
+                p1.Add(deck.TakeFirst());
+                p2.Add(deck.TakeFirst());
+                p3.Add(deck.TakeFirst());
+                if (buy.Count < 2)
+                    buy.Add(deck.TakeFirst());                                
+            }
+
+            Players[0].AcceptCards(p1);
+            Players[1].AcceptCards(p2);
+            Players[2].AcceptCards(p3);
+
+            currentDeal = new Deal(Deals.Count);
+            Deals.Add(currentDeal);
+            return currentDeal;
         }
 
         /// <summary>
         ///     Обработать ход
         /// </summary>
-        public bool Process(Move move)
+        public void Observe(Move move)
         {
             //todo валидация хода
 
-            _currentRound.Observe(move);
+            currentDeal.Observe(move);
             foreach (var p in Players)
             {
                 p.Observe(move);
             }
-            return true;
         }
-
     }
 }

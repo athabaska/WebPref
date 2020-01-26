@@ -8,16 +8,12 @@ using WebPref.Core.Interfaces;
 namespace WebPref.Core.Playing
 {
     /// <summary>
-    ///     Розыгрыш 
+    ///     Круг
+    ///     3(4) хода игроков до взятки
     /// </summary>
     public sealed class Round : IGameObserver
     {
         #region Свойства
-
-        /// <summary>
-        ///     Номер розыгрыша
-        /// </summary>
-        public int Number { get; }
 
         /// <summary>
         ///     Ходы
@@ -31,10 +27,8 @@ namespace WebPref.Core.Playing
         /// <summary>
         ///     Конструктор
         /// </summary>
-        /// <param name="number">Номер хода</param>
-        public Round(int number)
+        public Round()
         {
-            Number = number;
             Moves = new List<Move>();
         }
 
