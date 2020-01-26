@@ -12,11 +12,13 @@ namespace WebPref.Core.Playing
     {
         private Deal currentDeal;
 
+        private IList<Player> players;
+
         /// <summary>
         ///     Надо посмотреть, как обеспечивать постоянный порядок следования игроков
         ///     Можно вытащить итератор и метод для получения игрока по индексу
         /// </summary>
-        private IList<Player> Players { get; }
+        private IList<Hand> Hands { get; }
 
         
         //public IEnumerator<Player> PlayersEnumerator => Players.GetEnumerator();
@@ -38,9 +40,10 @@ namespace WebPref.Core.Playing
 
         public Game(IList<Player> players, GameSettings settings)
         {
-            Players = players;
+            this.players = players;
             Settings = settings;
             Deals = new List<Deal>();
+            Hands = new List<Hand>();            
         }
 
         /// <summary>
@@ -54,6 +57,8 @@ namespace WebPref.Core.Playing
 
         public Deal StartNewDeal()
         {
+            Hands.Clear();
+
             //раздать карты 
             var deck = new Deck();
             deck.Shuffle();
@@ -71,10 +76,15 @@ namespace WebPref.Core.Playing
                     buy.Add(deck.TakeFirst());                                
             }
 
-            Players[0].AcceptCards(p1);
-            Players[1].AcceptCards(p2);
-            Players[2].AcceptCards(p3);
-
+            //todo тут всё переделать, и насчет прикупа придумать
+            //для каждого игрока - новая рука
+            foreach (var p in players)
+            {
+                Hands.Add(new Hand(p, p1));
+                Hands.Add(new Hand(p, p2));
+                Hands.Add(new Hand(p, p3));
+            }
+            
             currentDeal = new Deal(Deals.Count);
             Deals.Add(currentDeal);
             return currentDeal;
@@ -88,10 +98,6 @@ namespace WebPref.Core.Playing
             //todo валидация хода
 
             currentDeal.Observe(move);
-            foreach (var p in Players)
-            {
-                p.Observe(move);
-            }
         }
     }
 }
