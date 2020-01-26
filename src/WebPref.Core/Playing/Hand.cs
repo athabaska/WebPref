@@ -16,6 +16,11 @@ namespace WebPref.Core.Playing
         private readonly HashSet<Card> currentCards;
 
         /// <summary>
+        ///     Игрок
+        /// </summary>
+        public Player Owner { get; private set; }
+
+        /// <summary>
         ///     Карты на руке сейчас
         /// </summary>
         public IList<Card> CurrentCards => currentCards.ToArray();
@@ -23,9 +28,10 @@ namespace WebPref.Core.Playing
         /// <summary>
         ///     Конструктор
         /// </summary>
-        public Hand()
+        public Hand(Player owner, IList<Card> cards)
         {
-            currentCards = new HashSet<Card>();
+            currentCards = new HashSet<Card>(cards);
+            Owner = owner;
         }
 
         public Player Holder { get; private set; }
@@ -47,20 +53,19 @@ namespace WebPref.Core.Playing
         }
 
         /// <summary>
-        ///     Добавить несколько карт
-        /// </summary>
-        public void AddCards(IList<Card> cards)
-        {
-            foreach(var card in cards)
-                currentCards.Add(card);
-        }
-
-        /// <summary>
         ///     Удалить все карты
         /// </summary>
         public void Clear()
         {
             currentCards.Clear();
+        }
+
+        /// <summary>
+        ///     Сменить держателя руки
+        /// </summary>
+        public void UpdateOwner (Player owner)
+        {
+            Owner = owner;
         }
 
         /// <summary>
