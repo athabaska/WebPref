@@ -25,5 +25,14 @@ namespace WebPref.Core.Playing
 
             
         }
+
+        public override bool Equals(object obj)
+        {
+            Player player = obj as Player;
+            if (player == null)
+                return false;
+
+            return (this.Id == player.Id && this.Name == player.Name);
+        }
     }
 }
