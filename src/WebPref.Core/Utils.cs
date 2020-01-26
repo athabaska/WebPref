@@ -14,7 +14,7 @@ namespace WebPref.Core.Utils
     /// </summary>
     public static class Utils
     {
-        public static SuitEnum[] Suits = { SuitEnum.Spades, SuitEnum.Clubs, SuitEnum.Diamonds, SuitEnum.Hearts, };
+        public static SuitEnum[] Suits = { SuitEnum.Spades, SuitEnum.Clubs, SuitEnum.Diamonds, SuitEnum.Hearts };
 
         public static string GetDescription(this Enum e)
         {

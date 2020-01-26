@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using WebPref.Core.Interfaces;
 
@@ -8,6 +9,7 @@ namespace WebPref.Core.Playing
     /// <summary>
     ///     Игра 
     /// </summary>
+    [NotMapped]
     public class Game : IGameObserver
     {
         private Deal currentDeal;
@@ -71,9 +73,9 @@ namespace WebPref.Core.Playing
                     buy.Add(deck.TakeFirst());                                
             }
 
-            Players[0].AcceptCards(p1);
-            Players[1].AcceptCards(p2);
-            Players[2].AcceptCards(p3);
+            //Players[0].AcceptCards(p1);
+            //Players[1].AcceptCards(p2);
+            //Players[2].AcceptCards(p3);
 
             currentDeal = new Deal(Deals.Count);
             Deals.Add(currentDeal);
@@ -86,12 +88,13 @@ namespace WebPref.Core.Playing
         public void Observe(Move move)
         {
             //todo валидация хода
-
+            /*
             currentDeal.Observe(move);
             foreach (var p in Players)
             {
                 p.Observe(move);
             }
+            */
         }
     }
 }

@@ -6,6 +6,7 @@
 
 #region usings
 
+using System.ComponentModel.DataAnnotations.Schema;
 using WebPref.Core.Utils;
 
 #endregion
@@ -15,6 +16,7 @@ namespace WebPref.Core.Playing
     /// <summary>
     ///     Карта
     /// </summary>
+    [NotMapped]
     public sealed class Card
     {
         #region Свойства
@@ -31,8 +33,7 @@ namespace WebPref.Core.Playing
 
         #endregion
 
-        #region Конструктор
-
+        #region Конструктор        
         /// <summary>
         ///     Конструктор
         /// </summary>

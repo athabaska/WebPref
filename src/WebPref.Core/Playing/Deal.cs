@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using WebPref.Core.Interfaces;
 
@@ -8,6 +9,7 @@ namespace WebPref.Core.Playing
     /// <summary>
     ///     Розыгрыш раздачи
     /// </summary>
+    [NotMapped]
     public class Deal : IGameObserver
     {
         private Round currentRound;

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 
@@ -9,6 +10,7 @@ namespace WebPref.Core.Playing
     /// <summary>
     ///     Колода
     /// </summary>
+    [NotMapped]
     public sealed class Deck
     {
         private HashSet<Card> cards;

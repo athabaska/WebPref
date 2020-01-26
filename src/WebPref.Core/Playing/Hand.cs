@@ -28,6 +28,8 @@ namespace WebPref.Core.Playing
             currentCards = new HashSet<Card>();
         }
 
+        public Player Holder { get; private set; }
+
         /// <summary>
         ///     Взять карту
         /// </summary>

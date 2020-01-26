@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using WebPref.Core.Playing;
 
@@ -33,6 +34,7 @@ namespace WebPref.Core.Lobby
         /// <summary>
         ///     Текущая игра
         /// </summary>
+        [NotMapped]
         public Game CurrentGame { get; private set; }
 
         public Table(Player owner, TableSettings settings, int number)
