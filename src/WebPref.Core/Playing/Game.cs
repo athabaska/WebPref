@@ -51,6 +51,16 @@ namespace WebPref.Core.Playing
         
         #region Методы
 
+        public Trading StartTrading()
+        {
+            //todo хранить очередь ходов
+            var trading = new Trading(players, players[0], ContractEnum.Six);
+
+            //todo подписаться на событие завершения торгов
+
+            return trading;
+        }
+
         /// <summary>
         ///     Получить игрока по индексу
         /// </summary>        
