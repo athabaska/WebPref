@@ -42,11 +42,14 @@ namespace WebPref.Core.Playing
 
         public Game(IList<Player> players, GameSettings settings)
         {
+            State = GameState.Configuring;
             this.players = players;
             Settings = settings;
             Deals = new List<Deal>();
             Hands = new List<Hand>();            
         }
+        
+        #region Методы
 
         /// <summary>
         ///     Получить игрока по индексу
@@ -68,14 +71,14 @@ namespace WebPref.Core.Playing
             var p2 = new List<Card>();
             var p3 = new List<Card>();
             var buy = new List<Card>();
-            
+
             while (deck.Count > 0)
             {
                 p1.Add(deck.TakeFirst());
                 p2.Add(deck.TakeFirst());
                 p3.Add(deck.TakeFirst());
                 if (buy.Count < 2)
-                    buy.Add(deck.TakeFirst());                                
+                    buy.Add(deck.TakeFirst());
             }
 
             //todo тут всё переделать, и насчет прикупа придумать
@@ -86,7 +89,7 @@ namespace WebPref.Core.Playing
                 Hands.Add(new Hand(p, p2));
                 Hands.Add(new Hand(p, p3));
             }
-            
+
             currentDeal = new Deal(Deals.Count);
             Deals.Add(currentDeal);
             return currentDeal;
@@ -99,6 +102,8 @@ namespace WebPref.Core.Playing
         {
             //todo валидация хода
             currentDeal.Observe(move);
-        }
+        } 
+ 
+        #endregion
     }
 }
