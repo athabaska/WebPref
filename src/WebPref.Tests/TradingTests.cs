@@ -16,11 +16,25 @@ namespace WebPref.Tests
         [Test]
         public void TestAllPass()
         {
-            var players = new List<Player> { p1, p2, p3};
+            var players = new List<Player> { p1, p2, p3 };
 
             var trading = new Trading(players, p2, ContractEnum.Six);
 
-            trading.CheckBid(new Bid(p1, BidTypeEnum.Play, SuitEnum.Spades, ContractEnum.Six));
+            Assert.IsFalse(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(Bid.PassBid(p3)));
+
+            Assert.IsTrue(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Hearts)));
+            Assert.IsFalse(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Seven, SuitEnum.Diamonds)));
+
+            Assert.IsFalse(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsFalse(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Seven, SuitEnum.Clubs)));
+            Assert.IsTrue(trading.CheckBid(Bid.PassBid(p1)));
+
+            Assert.IsTrue(trading.IsFinished);
+            Assert.IsTrue(trading.Highest.Equals(new Bid(p2, BidTypeEnum.Play, ContractEnum.Seven, SuitEnum.Diamonds)));
+
         }
     }
 }

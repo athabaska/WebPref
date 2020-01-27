@@ -45,7 +45,7 @@ namespace WebPref.Core.Playing
         /// <summary>
         ///     Конструктор
         /// </summary>
-        public Bid(Player player, BidTypeEnum bidType, SuitEnum suit, ContractEnum contract) : this(player, bidType)
+        public Bid(Player player, BidTypeEnum bidType, ContractEnum contract, SuitEnum suit) : this(player, bidType)
         {
             if (bidType == BidTypeEnum.Pass)
                 return;
@@ -91,5 +91,13 @@ namespace WebPref.Core.Playing
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            Bid other = obj as Bid;
+            if (other == null)
+                return false;
+
+            return other.Player == Player && other.BidType == BidType && other.Contract == Contract && other.Suit == Suit;
+        }
     }
 }

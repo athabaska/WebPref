@@ -15,9 +15,16 @@ namespace WebPref.Core.Playing
 
         private Player currentPlayer;
 
-        private readonly HashSet<Player> passed;
+        private readonly ISet<Player> passed;
+
+        private IDictionary<Player, Bid> lastBids;
 
         private ContractEnum minContract;
+        
+        /// <summary>
+        ///     Торги окончены
+        /// </summary>
+        public bool IsFinished { get; private set; }
 
         /// <summary>
         ///     Высший текущий бид
@@ -32,8 +39,10 @@ namespace WebPref.Core.Playing
         /// <param name="minContract">Минимальная игра</param>
         public Trading(IList<Player> players, Player first, ContractEnum minContract)
         {
-            Trace.WriteLine($"Первый ходит № {first}, мин игра {minContract.GetDescription()}");
+            Console.WriteLine($"Первый кричит {first}, мин игра {minContract.GetDescription()}");
 
+            IsFinished = false;
+            lastBids = new Dictionary<Player, Bid>();
             passed = new HashSet<Player>();
             this.players = players;
             this.currentPlayer = first;
@@ -45,20 +54,21 @@ namespace WebPref.Core.Playing
         /// </summary>
         public bool CheckBid(Bid bid)
         {
-            Trace.WriteLine(bid);
+            Console.WriteLine(bid);
             //валидации
             if (passed.Contains(bid.Player))
             {
-                Trace.WriteLine("Игрок уже пасанул ранее");
+                Console.WriteLine("Игрок уже пасанул ранее");
                 return false;
             }
             if (bid.Player != currentPlayer)
             {
-                Trace.WriteLine("Ставка не в очередь");
+                Console.WriteLine("Ставка не в очередь");
                 return false;
             }
             if (bid.BidType == BidTypeEnum.Pass)
             {
+                lastBids[bid.Player] = bid;
                 passed.Add(bid.Player);
                 if (passed.Count == players.Count)
                 {
@@ -74,52 +84,71 @@ namespace WebPref.Core.Playing
                 return true;
             }
 
-            if (bid.Contract <= minContract)
+            if (bid.Contract == ContractEnum.Miser)
             {
-                Trace.WriteLine($"Минимальная игра {minContract}");
+                //todo кабальный
+            }
+
+            Bid lastBid;
+            if (lastBids.TryGetValue(bid.Player, out lastBid) && !bid.IsHigherThan(lastBid))
+            {
+                Console.WriteLine($"Ставку можно только повышать");
                 return false;
             }
 
-            if (Highest == null || bid.IsHigherThan(Highest))
+            if (bid.Contract < minContract)
             {
-                Highest = bid;
-                MoveCurrent();
-                return true;
+                Console.WriteLine($"Минимальная игра {minContract}");
+                return false;
             }
 
-            return false;
+            if (Highest != null && !bid.IsHigherThan(Highest))
+            {
+                Console.WriteLine($"Надо ставить выше текущей {Highest}");
+                return false;
+            }
+
+            lastBids[bid.Player] = bid;
+            Highest = bid;
+            MoveCurrent();
+            return true;
         }
 
-        
         private void Finish(Bid winner)
         {
-            Trace.WriteLine("Победил " + Highest);
-            TradingFinished?.Invoke(this, winner);
+            Console.WriteLine("Победил " + Highest);
+            IsFinished = true;
+            TradingFinished?.Invoke(this, winner);            
         }
 
         private void AllPassed()
         {
-            Trace.WriteLine("Все пасанули");
+            Console.WriteLine("Все пасанули");
+            IsFinished = true;
             TradingFinished?.Invoke(this, null);
         }
 
         private void MoveCurrent()
         {
             var cur = players.IndexOf(currentPlayer);
-            for (var i = cur; i <= players.Count; i++)
+            for (var i = cur + 1; i < players.Count; i++)
             {
-                if (!passed.Contains(players[i]))
+                var p = players[i];
+                if (!passed.Contains(p))
                 {
-                    Trace.WriteLine($"Следующий голос {players[i]}");
+                    currentPlayer = p;
+                    Console.WriteLine($"Следующий голос {p}");
                     return;
                 }
             }
 
             for (var i = 0; i < cur; i++)
             {
-                if (!passed.Contains(players[i]))
+                var p = players[i];
+                if (!passed.Contains(p))
                 {
-                    Trace.WriteLine($"Следующий голос {players[i]}");
+                    currentPlayer = p;
+                    Console.WriteLine($"Следующий голос {p}");
                     return;
                 }
             }
