@@ -35,16 +35,25 @@ namespace WebPref.Core.Playing
         ///     Конструктор
         /// </summary>
         /// <param name="players">Игроки</param>
-        /// <param name="first">Первое слово</param>
-        /// <param name="minContract">Минимальная игра</param>
-        public Trading(IList<Player> players, Player first, ContractEnum minContract)
-        {
-            Console.WriteLine($"Первый кричит {first}, мин игра {minContract.GetDescription()}");
 
+        public Trading(IList<Player> players)
+        {
             IsFinished = false;
             lastBids = new Dictionary<Player, Bid>();
             passed = new HashSet<Player>();
-            this.players = players;
+            this.players = players;            
+        }
+
+        /// <summary>
+        ///     Начать торги
+        /// </summary>
+        /// <param name="first">Первое слово</param>
+        /// <param name="minContract">Минимальная игра</param>
+        public void Start(Player first, ContractEnum minContract)
+        {
+            lastBids.Clear();
+            passed.Clear();
+            Console.WriteLine($"Первый кричит {first}, мин игра {minContract.GetDescription()}");
             this.currentPlayer = first;
             this.minContract = minContract;
         }

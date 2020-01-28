@@ -1,75 +1,80 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using WebPref.Core.Interfaces;
+
 
 namespace WebPref.Core.Playing
 {
-    /// <summary>
-    ///     Игра 
-    /// </summary>
+    /// <summary> Игра </summary>
     [NotMapped]
     public class Game : IGameObserver
     {
+        #region Члены
+
+        private readonly Trading trading;
         private Deal currentDeal;
+        private readonly IList<Player> players;
+        private int firstHand;
 
-        private IList<Player> players;
+        #endregion
 
-        /// <summary>
-        ///     Надо посмотреть, как обеспечивать постоянный порядок следования игроков
-        ///     Можно вытащить итератор и метод для получения игрока по индексу
-        /// </summary>
+        #region Свойства
+
+        /// <summary> Надо посмотреть, как обеспечивать постоянный порядок следования игроков Можно вытащить итератор и метод для получения игрока по индексу </summary>
         private IList<Hand> Hands { get; }
 
-        
         //public IEnumerator<Player> PlayersEnumerator => Players.GetEnumerator();
 
-        /// <summary>
-        ///     Параметы и конвенции
-        /// </summary>
+        /// <summary> Параметы и конвенции </summary>
         public GameSettings Settings { get; private set; }
 
-        /// <summary>
-        ///     Состояние игры
-        /// </summary>
+        /// <summary> Состояние игры </summary>
         public GameState State { get; private set; }
 
-        /// <summary>
-        ///     Раздачи
-        /// </summary>
+        /// <summary> Раздачи </summary>
         public IList<Deal> Deals { get; }
+
+        #endregion
+
+        #region Конструктор
 
         public Game(IList<Player> players, GameSettings settings)
         {
+            firstHand = 0;
+            trading = new Trading(players);
+            trading.TradingFinished += TradingFinished;
             State = GameState.Configuring;
             this.players = players;
             Settings = settings;
             Deals = new List<Deal>();
-            Hands = new List<Hand>();            
+            Hands = new List<Hand>();
         }
-        
+
+        #endregion
+
         #region Методы
 
         public Trading StartTrading()
         {
             //todo хранить очередь ходов
-            var trading = new Trading(players, players[0], ContractEnum.Six);
-
-            //todo подписаться на событие завершения торгов
-
+            trading.Start(players[firstHand], ContractEnum.Six);
             return trading;
         }
 
-        /// <summary>
-        ///     Получить игрока по индексу
-        /// </summary>        
+        private void TradingFinished(object sender, Bid winner)
+        {
+            firstHand++;
+            if (firstHand >= players.Count)
+                firstHand = 0;
+            //todo
+        }
+
+        /// <summary> Получить игрока по индексу </summary>
         //public Player GetPlayer(int i)
         //{
         //    //todo проверку индекса
         //    return Players[i];
         //}
-
         public Deal StartNewDeal()
         {
             Hands.Clear();
@@ -105,15 +110,15 @@ namespace WebPref.Core.Playing
             return currentDeal;
         }
 
-        /// <summary>
-        ///     Обработать ход
+        /// <summary> 
+        ///     Обработать ход 
         /// </summary>
         public void Observe(Move move)
         {
             //todo валидация хода
             currentDeal.Observe(move);
-        } 
- 
+        }
+
         #endregion
     }
 }
