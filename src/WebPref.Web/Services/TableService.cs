@@ -26,16 +26,17 @@ namespace WebPref.Web.Services
         /// Создание нового стола, пока на минималках.
         /// </summary>
         /// <param name="playerId">Идентификатор игрока-владельца создаваемого стола</param>
+        /// <param name="playerName">Имя пользователя, на случай, если его пока в базе игр нет и надо добавлять</param>
         /// <param name="tableSettings">Свойства стола, должны передваться откуда-то из клиентской части</param>
         /// <param name="resultDescription">Описание результата создания стола или возникших ошибок</param>
         /// <param name="newTable"></param>
         /// <returns></returns>
-        public bool CreateTable(string playerId, TableSettings tableSettings, out string resultDescription, out Table newTable)
+        public bool CreateTable(string playerId, string playerName, TableSettings tableSettings, out string resultDescription, out Table newTable)
         {
             newTable = null;
             try
             {                
-                Player owner = playerManager.GetPlayer(playerId);
+                Player owner = playerManager.GetCreatePlayer(playerId, playerName);
                 if (owner == null)
                 {
                     resultDescription = "Игрок с переданным ID " + playerId + " не найден в БД игр";

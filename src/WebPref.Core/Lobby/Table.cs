@@ -70,6 +70,14 @@ namespace WebPref.Core.Lobby
             return true;
         }
 
+        public bool HasPlayer(string playerId)
+        {
+            if (this.TablePlayers.Find(tp => tp.PlayerId == playerId) == null)
+                return false;
+            else
+                return true;
+        }
+
         /// <summary>
         ///     Начать игру
         /// </summary>

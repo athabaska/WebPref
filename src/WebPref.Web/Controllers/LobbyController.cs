@@ -47,16 +47,16 @@ namespace WebPref.Web.Controllers
         [Route("CreateTable")]
         async public Task<bool> CreateTable([FromBody]Dictionary<string, string> tableParams)
         {
-            string playerId;
+            string playerId, playerName;
             var user = await userManager.GetUserAsync(HttpContext.User);
             
             Table newTable;
             playerId = user.Id;
+            playerName = user.UserName;
 
             TableSettings tableSettings = new TableSettings(Core.Playing.PlayersCountEnum.Three, Core.Playing.GameTypeEnum.Leningrad, false);
             string resultDescription;
-            return tableService.CreateTable(playerId, tableSettings, out resultDescription, out newTable);
-
+            return tableService.CreateTable(playerId, playerName, tableSettings, out resultDescription, out newTable);            
         }
     }
 }

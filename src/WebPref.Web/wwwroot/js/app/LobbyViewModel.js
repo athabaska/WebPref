@@ -8,6 +8,7 @@
 
             this.getTableList = jquery.proxy(this.getTableList, this);
             this.refreshTables = jquery.proxy(this.refreshTables, this);
+            this.processTableCreation = jquery.proxy(this.processTableCreation, this);
         }
 
         LobbyViewModel.prototype.getTableList = function () {
@@ -36,6 +37,10 @@
                 data: JSON.stringify(params),
                 success: this.getTableList
             });
+        };
+
+        LobbyViewModel.prototype.processTableCreation = function (result) {
+
         };
 
         return LobbyViewModel;

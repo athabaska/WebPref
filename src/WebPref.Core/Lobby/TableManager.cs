@@ -29,6 +29,9 @@ namespace WebPref.Core.Lobby
         {
             try
             {
+                //проверим, а нет ли уже стола, где этот игрок присутствует                
+                if (PlayerIsSeated(owner.Id))
+                    throw new Exception("Player has joined table already.");
                 //смотрим, есть ли игрок в БД
                 Player ownerPlayer = PlayerManager.GetCreatePlayer(owner.Id, owner.Name);
 
@@ -79,15 +82,25 @@ namespace WebPref.Core.Lobby
 
         public bool AddPlayerToTable(Player player, Guid tableId)
         {
-            var table = _currentTables[tableId];
-            Player dbPlayer = PlayerManager.GetCreatePlayer(player.Id, player.Name);
-
-            if (table.AddPlayer(dbPlayer))
+            try
             {
-                PrefContext.SaveChanges();
-                return true;
+                //смотрим, а не сидит ли уже игрок где-нибудь
+                if (PlayerIsSeated(player.Id) == true)
+                    throw new Exception("Player joined the table already.");
+                var table = _currentTables[tableId];
+                Player dbPlayer = PlayerManager.GetCreatePlayer(player.Id, player.Name);
+
+                if (table.AddPlayer(dbPlayer))
+                {
+                    PrefContext.SaveChanges();
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch(Exception ex)
+            {
+                throw new Exception("Player adding error: " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -102,6 +115,16 @@ namespace WebPref.Core.Lobby
                 return 1;
             //var rnd = new Random();
             //return rnd.Next(1, 10000);
+        }
+
+        private bool PlayerIsSeated(string playerId)
+        {
+            //проверим, а нет ли уже стола, где этот игрок присутствует
+            Table existing = _currentTables.Values.FirstOrDefault(t => t.HasPlayer(playerId));
+            if (existing != null)
+                return true;
+            else
+                return false;
         }
     }
 }
