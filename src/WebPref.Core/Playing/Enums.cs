@@ -60,11 +60,11 @@ namespace WebPref.Core.Playing
         [Description("8")]
         Eight = 8,
         [Description("9")]
-        Nine = 9,
+        Nine = 10,
         [Description("10")]
-        Ten = 10,
-        [Description("Miser")]
-        Miser = 11
+        Ten = 11,
+        [Description("Мизер")]
+        Miser = 9
     }
 
     /// <summary>
@@ -87,12 +87,36 @@ namespace WebPref.Core.Playing
         Hybrid = 3
     }
 
+    /// <summary>
+    ///     Заявка игра/пас
+    /// </summary>
+    public enum BidTypeEnum
+    {
+        [Description("Пас")]
+        Pass,
+
+        [Description("Игра")]
+        Play
+    }
+
+    /// <summary>
+    ///     Заявка вист/пас
+    /// </summary>
+    public enum DefendTypeEnum
+    {
+        [Description("Вист")]
+        Whist,
+
+        [Description("Пас")]
+        Pass,
+    }
+
     public enum GameState
     {
-        Configuring,
-        Bidding,
-        Playing,
-        Ended,
-        Defered
+        Configuring = 0,
+        Bidding = 1,
+        Playing = 2,
+        Ended = 3,
+        Defered = 4
     }
 }
