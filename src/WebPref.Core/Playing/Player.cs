@@ -9,8 +9,9 @@ namespace WebPref.Core.Playing
     
     /// <summary>
     /// Класс представляет игрока, в принципе, особых свойств ему не надо, id пользователя и имя будет получать из web-части, должна накапливаться статистика где-то
-    /// 
-    /// </summary>
+    public class Player
+    {/// 
+     /// </summary>
         public string Id { get; set; }
         public string Name { get; set; }        
 

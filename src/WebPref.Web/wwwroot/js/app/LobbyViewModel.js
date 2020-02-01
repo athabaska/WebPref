@@ -27,5 +27,16 @@
 
         };
 
+        LobbyViewModel.prototype.createTable = function () {
+            var params = { "testParam1": "testValue1" };
+            jquery.ajax({
+                type: 'POST',
+                url: 'https://localhost:44394/api/Lobby/CreateTable',
+                contentType: 'application/json',
+                data: JSON.stringify(params),
+                success: this.getTableList
+            });
+        };
+
         return LobbyViewModel;
     });
