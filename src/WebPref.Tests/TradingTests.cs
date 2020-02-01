@@ -17,11 +17,14 @@ namespace WebPref.Tests
         public void TestAllPass()
         {
             var players = new List<Player> { p1, p2, p3 };
+            var settings = new GameSettings(PlayersCountEnum.Three, GameTypeEnum.Leningrad);
+            var game = new Game(players, settings);
 
-            var trading = new Trading(players, p2, ContractEnum.Six);
+            //торги 1, первое слово p1
+            var trading = game.StartTrading();
 
-            Assert.IsFalse(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
-            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Clubs)));
             Assert.IsTrue(trading.CheckBid(Bid.PassBid(p3)));
 
             Assert.IsTrue(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Hearts)));
@@ -35,6 +38,19 @@ namespace WebPref.Tests
             Assert.IsTrue(trading.IsFinished);
             Assert.IsTrue(trading.Highest.Equals(new Bid(p2, BidTypeEnum.Play, ContractEnum.Seven, SuitEnum.Diamonds)));
 
+            //торги 2, первое слово p2
+            trading = game.StartTrading();
+            Assert.IsFalse(trading.CheckBid(Bid.PassBid(p3)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(Bid.PassBid(p3)));
+            Assert.IsTrue(trading.CheckBid(Bid.PassBid(p1)));
+
+            //торги 3, первое слово p3
+            trading = game.StartTrading();
+            Assert.IsTrue(trading.CheckBid(Bid.PassBid(p3)));
+            Assert.IsFalse(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p1, BidTypeEnum.Play, ContractEnum.Six, SuitEnum.Spades)));
+            Assert.IsTrue(trading.CheckBid(new Bid(p2, BidTypeEnum.Play, ContractEnum.Eight, SuitEnum.Spades)));
         }
     }
 }

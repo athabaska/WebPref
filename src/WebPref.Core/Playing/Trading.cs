@@ -37,7 +37,7 @@ namespace WebPref.Core.Playing
         /// <param name="players">Игроки</param>
 
         public Trading(IList<Player> players)
-        {
+        {            
             IsFinished = false;
             lastBids = new Dictionary<Player, Bid>();
             passed = new HashSet<Player>();
@@ -51,6 +51,7 @@ namespace WebPref.Core.Playing
         /// <param name="minContract">Минимальная игра</param>
         public void Start(Player first, ContractEnum minContract)
         {
+            Highest = null;
             lastBids.Clear();
             passed.Clear();
             Console.WriteLine($"Первый кричит {first}, мин игра {minContract.GetDescription()}");
