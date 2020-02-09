@@ -9,6 +9,7 @@ using WebPref.Web.Models;
 using WebPref.Web.Services;
 using WebPref.Core.Lobby;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace WebPref.Web.Controllers
 {
@@ -34,10 +35,10 @@ namespace WebPref.Web.Controllers
             List<TableModel> result = new List<TableModel>();
             foreach(var table in tables)
             {
-                TableModel tableModel = new TableModel();
-                tableModel.Name = "Стол №" + table.Number.ToString();
-                tableModel.State = TableState.Waiting; //TODO - подумать, что тут можно отдавать
-                tableModel.PlayerCount = table.TablePlayers.Count();
+                TableModel tableModel = new TableModel(table);
+                //tableModel.Name = "Стол №" + table.Number.ToString();
+                //tableModel.State = TableState.Waiting; //TODO - подумать, что тут можно отдавать
+                //tableModel.PlayerCount = table.TablePlayers.Count();
                 result.Add(tableModel);
             }
             return result;            
@@ -45,7 +46,7 @@ namespace WebPref.Web.Controllers
 
         [HttpPost]
         [Route("CreateTable")]
-        async public Task<bool> CreateTable([FromBody]Dictionary<string, string> tableParams)
+        public async Task<ResultModel> CreateTable([FromBody]Dictionary<string, string> tableParams)
         {
             string playerId, playerName;
             var user = await userManager.GetUserAsync(HttpContext.User);
@@ -56,7 +57,22 @@ namespace WebPref.Web.Controllers
 
             TableSettings tableSettings = new TableSettings(Core.Playing.PlayersCountEnum.Three, Core.Playing.GameTypeEnum.Leningrad, false);
             string resultDescription;
-            return tableService.CreateTable(playerId, playerName, tableSettings, out resultDescription, out newTable);            
+            ResultModel result = new ResultModel();
+            if (tableService.CreateTable(playerId, playerName, tableSettings, out resultDescription, out newTable))
+            {
+                result.Success = true;
+                result.Description = resultDescription;
+                //прямо стол не отдать, там циклические ссылки получаются
+                TableModel tableModel = new TableModel(newTable);                
+                result.Data = JsonConvert.SerializeObject(tableModel);
+            }
+            else
+            {
+                result.Success = false;
+                result.Description = resultDescription;
+                result.Data = "";
+            }
+            return result;            
         }
     }
 }
