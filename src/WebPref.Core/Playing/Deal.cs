@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using WebPref.Core.Interfaces;
 
 namespace WebPref.Core.Playing
 {
@@ -10,7 +9,7 @@ namespace WebPref.Core.Playing
     ///     Розыгрыш раздачи
     /// </summary>
     [NotMapped]
-    public class Deal : IGameObserver
+    public class Deal
     {
         private Round currentRound;
 
@@ -34,10 +33,8 @@ namespace WebPref.Core.Playing
 
         public void Observe(Move move)
         {
-            //todo обработать ход
-            
-            currentRound.Observe(move);
-
+            //проверитЬ ,что ход круг закончен
+            currentRound.Add(move);
         }
     }
 }

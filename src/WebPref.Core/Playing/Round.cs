@@ -1,7 +1,6 @@
 ﻿#region usings
 
 using System.Collections.Generic;
-using WebPref.Core.Interfaces;
 
 #endregion
 
@@ -11,7 +10,7 @@ namespace WebPref.Core.Playing
     ///     Круг
     ///     3(4) хода игроков до взятки
     /// </summary>
-    public sealed class Round : IGameObserver
+    public sealed class Round
     {
         #region Свойства
 
@@ -39,7 +38,7 @@ namespace WebPref.Core.Playing
         /// <summary>
         ///     Обработать ход
         /// </summary>
-        public void Observe(Move move)
+        public void Add(Move move)
         {
             Moves.Add(move);
         }        

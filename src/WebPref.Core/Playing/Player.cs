@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using WebPref.Core.Interfaces;
 using WebPref.Core.Lobby;
 
 namespace WebPref.Core.Playing

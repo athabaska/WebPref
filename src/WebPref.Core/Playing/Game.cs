@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebPref.Core.Interfaces;
 
 
 namespace WebPref.Core.Playing
 {
     /// <summary> Игра </summary>
     [NotMapped]
-    public class Game : IGameObserver
+    public class Game
     {
         #region Члены
 
@@ -113,10 +112,11 @@ namespace WebPref.Core.Playing
         /// <summary> 
         ///     Обработать ход 
         /// </summary>
-        public void Observe(Move move)
+        public bool ProcessMove(Move move)
         {
             //todo валидация хода
-            currentDeal.Observe(move);
+            //return currentDeal.A(move);
+            return true;
         }
 
         #endregion
